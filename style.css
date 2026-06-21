@@ -1,0 +1,44 @@
+body {
+  background: #302e2b;
+  color: #fff;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#totalPlayers {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+
+
+.display-flex {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: space-around;
+}
+
+#gameTitle {
+  align-items: center;
+  text-align: center;
+}
+
+.timer-button {
+      border: none;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+      padding: 4px 10px;
+      text-align: center;
+      font-size: 32px;
+}
+
+.timer-button:hover {
+      cursor: pointer;
+      background-color: gray;
+      color: white;
+}
