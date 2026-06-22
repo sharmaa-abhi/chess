@@ -4,6 +4,28 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
+#youArePlayingAs{
+  font-size: 24px;
+  font-weight: bold;
+  
+}
+
+#waitingPara {
+  font-size: 24px;
+  font-weight: bold;
+  width: 80vw;
+  color: #ffcc00;
+  margin-top: 30vh;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.displayNone {
+  display: none;
+}
+
 #totalPlayers {
   position: absolute;
   top: 20px;

@@ -6,24 +6,21 @@
     <title>chess 2026 | MultiPlayer | sharmaa-abhi</title>
     <link rel="stylesheet" href="./library/css/chessboard-1.0.0.min.css" />
     <link rel="stylesheet" href="./style.css" />
-    <script
-      src="https://code.jquery.com/jquery-4.0.0.min.js"
-      integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao="
-      crossorigin="anonymous"
-    ></script>
+    <script src="./library/js/chess.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
   <body>
     <p id="totalPlayers">Total Player : 0</p>
     <h2 id="gameTitle">CHESS GAME</h2>
-    <div class="display-flex">
-      <div id="myBoard" style="width: 500px"></div>
-      <div>
+    <div id="mainElement" class="display-flex">
+      <div id="myBoard" style="width: 500px;"></div>
+      <div id="buttonsParent">
         <button data-timer="10" class="timer-button">10 min.</button>
         <button data-timer="15" class="timer-button">15 min.</button>
         <button data-timer="20" class="timer-button">20 min.</button>
       </div>
     </div>
+    <p class="displayNone" id="waitingPara">Waiting for opponent to join...</p>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
       integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="

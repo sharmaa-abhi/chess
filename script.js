@@ -6,8 +6,14 @@ var game = new Chess();
 var $status = $("#status");
 var $fen = $("#fen");
 var $pgn = $("#pgn");
+let currentPlayer = null;
 
 function onDragStart(source, piece, position, orientation) {
+
+
+  if (game.turn() !== currentPlayer) return false;
+
+
   // do not pick up pieces if the game is over
   if (game.game_over()) return false;
 
@@ -30,7 +36,7 @@ function onDrop(source, target) {
 
   // illegal move
   if (move === null) return "snapback";
-
+  socket.emit("syncState", game.fen(), game.turn());
   updateStatus();
 }
 
@@ -73,20 +79,34 @@ function updateStatus() {
   $pgn.html(game.pgn());
 }
 
+function onChange() {
+  if(game.game_over()){
+    if(game.in_checkmate()) {
+      const winner = game.turn() === "b" ? "W" : "B";
+      socket.emit("gameOver", winner);
+    }
+  }
+}
+
 var config = {
   draggable: true,
   position: "start",
   onDragStart: onDragStart,
   onDrop: onDrop,
+  onChange:onChange,
   onSnapEnd: onSnapEnd,
 };
 board = Chessboard("myBoard", config);
 
 updateStatus();
 
-function handleButtonClick(event) {  
-  const timer = Number(event.target.getAttribute('data-timer'));
-  alert(timer);
+function handleButtonClick(event) {
+  const timer = Number(event.target.getAttribute("data-timer"));
+  socket.emit("wantToPlay", { timer: timer });
+  $("#mainElement").hide();
+  $("#waitingPara").show();
+
+  // alert(timer);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -97,11 +117,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 const socket = io("http://localhost:3000");
 // console.log(socket);
 
-
 socket.on("totalPlayersCountChange", function (totalPlayersCount) {
   $("totalPlayers").html("Total Player : " + totalPlayersCount);
+});
+
+socket.on("matchMade", (colour) => {
+  alert("Match Made! You are playing as " + colour);
+  $("#mainElement").hide();
+  $("#waitingPara").show();
+  const currentPlayer = colour === "b" ? "Black" : "White";
+  $("#buttonsParent").html(
+    "<p id= 'youArePlayingAs' >You Are Playing As " + currentPlayer + "</p>",
+  );
+  game.reset();
+  board.clear();
+  board.start();
+  board.orientation(currentPlayer.toLowerCase());
+});
+
+socket.on("syncStateFromServer", function(fen, turn){
+  game.load(fen);
+  game.setTurn(turn);
+  board.position(fen);
+
+});
+
+
+socket.on("gameOverFromServer", function(winner){
+  const message = winner === currentPlayer ? "You won the match :)" : "You lost the match :(";
+  alert(message); 
+  window.location.reload(); 
 });
